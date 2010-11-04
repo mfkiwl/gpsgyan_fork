@@ -1,0 +1,45 @@
+		  namespace gpstk
+		  {
+		     // Compute the corrected range at RECEIVE time, from receiver at position Rx,
+		     // to the GPS satellite given by SatID sat, as well as all the CER quantities,
+		     // given the nominal receive time tr_nom and an EphemerisStore. Note that this
+		     // routine does not intrinsicly account for the receiver clock error
+		     // like the ComputeAtTransmitTime routine does.
+		     double CorrectedEphemerisRange::ComputeAtReceiveTime(
+		        const DayTime& tr_nom,
+		        const Position& Rx,
+		        const SatID sat,
+		        const XvtStore<SatID>& Eph)
+		     {
+		        try {
+		           int nit;
+		           double tof,tof_old,wt,sx,sy;
+		           GPSGeoid geoid;
+		  
+		           nit = 0;
+		           tof = 0.07;       // initial guess 70ms
+		           do {
+		              // best estimate of transmit time
+		              transmit = tr_nom;
+		              transmit -= tof;
+		              tof_old = tof;
+		              // get SV position
+		              try {
+		                 svPosVel = Eph.getXvt(sat, transmit);
+		              }
+		              catch(InvalidRequest& e) {
+		                 GPSTK_RETHROW(e);
+		              }
+		  
+		              rotateEarth(Rx);
+		              // update raw range and time of flight
+		              rawrange = RSS(svPosVel.x[0]-Rx.X(),
+		                             svPosVel.x[1]-Rx.Y(),
+		                             svPosVel.x[2]-Rx.Z());
+		              tof = rawrange/geoid.c();
+		  
+		           } while(ABS(tof-tof_old)>1.e-13 && ++nit<5);
+		  
+		           updateCER(Rx);
+		  
+00097          return (rawrange-svclkbias-relativity);
