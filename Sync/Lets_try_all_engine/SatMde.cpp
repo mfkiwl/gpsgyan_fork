@@ -290,8 +290,7 @@ for (int i=0; i<totalSat; i++)
 	CodeGenerator(satMDE_ai.codegen,satid,codefrequency);
 	CarrGenerator(satMDE_ai.carrgen,satid,carrfrequency);
 	double rxIF_2_txCode = satMDE_ai.carrgen->carrGen_Data.rxIF/codefrequency;
-	//added by 
-	if(satid.id==3)
+	/*if(satid.id==3)
 	{
 	modulator.activeData.initCarrierFinePhase=0;
 	modulator.activeData.initCoarsePhase=0;
@@ -299,7 +298,7 @@ for (int i=0; i<totalSat; i++)
 	modulator.activeData.codeInf = &satMDE_ai.codegen->codeGen_Data;
 	modulator.Engine(Modulator::RUN_METHOD );
 	modulator.EngineOutput(Modulator::DATA_HERE);
-	}
+	}*/
 	
 	
 	prvMeas[satid].prvPseudoRange = range;

@@ -127,8 +127,6 @@ private :
 // Private Data Members
 
 /* Structures*/
-/* All active and passive inputs are defined in structures in <class>types.hpp
-
 satMDE_actIstruct satMDE_ai;
 satMDE_psvIstruct satMDE_pi;
 satMDE_clkFreq clkL1,clkL2c,clkL5;
@@ -136,19 +134,8 @@ satMDE_clkFreq clkL1,clkL2c,clkL5;
 
 
 /*STL Containers*/
-//Maps are a kind of associative containers that stores elements formed by the combination of a key value and a mapped value
-// We are using map as all of our data is unique to a particular transmitter i.e satellited ID
-map<SatID, satMDE_prvMeas> prvMeas; // map 
+map<SatID, satMDE_prvMeas> prvMeas;
 map<SatID, satMDE_ostruct> satMDE_pData1;
-
-//Vectors are a kind of sequence containers. As such, their elements are ordered following a strict linear sequence.
-//Vector containers are implemented as dynamic arrays; Just as regular arrays, vector containers have their elements 
-//stored in contiguous storage locations, which means that their elements can be 
-//accessed not only using iterators but also using offsets on regular pointers to elements.
-//But unlike regular arrays, storage in vectors is handled automatically, allowing it to be expanded and contracted as needed.
-// We are using vectors instead of array in all the processed data structure of visible transmitter (SV) 
-// as we can expand or delete the data as in when the SV is visible or go out of visiblity respectively
-
 std::vector<satMDE_ostruct> satMDE_pData;
 std::vector<SatID> rejectedSV;
 

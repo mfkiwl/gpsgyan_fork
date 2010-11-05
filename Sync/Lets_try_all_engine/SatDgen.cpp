@@ -778,7 +778,7 @@ void SatDgen::OutputData(std::ostream & 	s )
  * Exception(s) 			: ExcSatDb
  * Return value 			: None
  * System Call				: Exception handler
- * Functions called			: None
+ * Functions called			: Nones
  * Reference				: None
  * Specific library calls	: None
  * Member variables accessed: None

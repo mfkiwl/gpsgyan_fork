@@ -29,7 +29,7 @@ void Timer_class :: timerset(UINT timerms)
 pObject = this; 
 Timer_class *pSomeClass = (Timer_class*)pObject;	
 	
-timer_ms =timerms ;
+	timer_ms =timerms ;
 m_timerID = SetTimer(NULL, 0, 1000,TimerProc_Wrapper );
 
 }

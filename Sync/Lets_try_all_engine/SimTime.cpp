@@ -13,7 +13,9 @@ void SimTimeEngine::InputInfToEngine(DayTime &time )
 {
 
 simStartTime = time;
+//simStartTime.setSystemTime();
 simEndTime = simStartTime;
+//simEndTime.addSeconds((double)3600);
 startSimTime = true;
 stopSimTime= false;
 pauseSimTime=false;
@@ -27,7 +29,16 @@ void SimTimeEngine::InputParamToEngine() throw(InvalidParameter)
 simtimeIsSystemTime = true;
 simtimeIsTimer=false;
 
+//enableSatClockModel= false;
+
+
+
+//debugLocLevel = 1;
+//verboseLocLevel= 1;
 }
+
+//void SimTimeEngine:: prepareIpToEngine()
+
 
 
 void SimTimeEngine:: EngineControl(Kind kind)

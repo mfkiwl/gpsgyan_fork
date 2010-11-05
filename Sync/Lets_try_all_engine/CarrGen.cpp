@@ -520,11 +520,11 @@ int i;
 double temp_cos,temp_sin;
 for( i = M_ZERO ; i < CARR_CYCLCE_RESOLUTION ; i++)
 	{
-	
+
 		
-		// this will ensure the zero crossing of cosine wave cosine(pi/2) and cosine(3*pi/2)
+		//Forcing the value of sin (pi) and sin(0) to hard zero
 		
-		if((i==CARR_CYCLCE_RESOLUTION/4)||(i==3*CARR_CYCLCE_RESOLUTION/4)) 
+		if((i==CARR_CYCLCE_RESOLUTION/4)||(i==3*CARR_CYCLCE_RESOLUTION/4))
 		temp_cos= M_ZERO;
 		else
 		temp_cos = cos((M_TWO * gpstk::PI * i)/CARR_CYCLCE_RESOLUTION); // cos(2*pi*i
@@ -534,6 +534,8 @@ for( i = M_ZERO ; i < CARR_CYCLCE_RESOLUTION ; i++)
 		temp_sin = M_ZERO;
 		else
 		temp_sin =  sin((M_TWO * gpstk::PI * i)/CARR_CYCLCE_RESOLUTION);
+		
+		
 		
 		carrArrayI.push_back(temp_cos);
 		carrArrayQ.push_back(temp_sin);

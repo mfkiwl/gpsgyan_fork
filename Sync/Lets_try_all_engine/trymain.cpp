@@ -23,9 +23,9 @@ int main()
  UINT id;
  MSG msg;
  bStillBusy  = true;
-	bool f1= false;
-bool f2= false;
-bool f3= false;
+ bool f1= false;
+  bool f2= false;
+   bool f3= false;
     bool f4= false;
 
  id = SetTimer(NULL, 0, 1000, (TIMERPROC) TimerProc1);
@@ -49,7 +49,6 @@ bool f3= false;
 	ofstream s3("try3.txt");
 	ofstream s4("try4.txt");
 	ofstream s5("try5.txt");
-	ofstream s6("carr.txt");
 
  /* Connection of engines <passive Inputs and Param> mainly from GUI*/
 	DayTime time1;
@@ -58,7 +57,6 @@ bool f3= false;
     crap.InputInfToEngine(time1);
     crap.InputParamToEngine();
  /* Passive connection for RXDE*/
- 
  double lat = 35.772020;
  double lon = 78.67410;
  double alt = 437.00;
