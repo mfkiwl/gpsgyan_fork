@@ -365,7 +365,7 @@ double RxDE::GenerateRxClkErr(double& update_interval)
 
 	double gaussian_walk1 = std::sqrt(CLK_SF*dt + CLK_SGB_12*pow(dt,(double)3))*norm1 + std::sqrt( CLK_SGB_4*pow(dt,(double)3))*norm2;
 	double gaussian_walk2 = std::sqrt( CLK_SG*dt)*norm2;
-
+//RG Brown Equation for Clock Modeling
     rxClkerr_time[M_ONE] = rxClkerr_time[M_ZERO] + dt*rxClkerr_phase[M_ZERO] + gaussian_walk1;
     rxClkerr_phase[M_ONE] = rxClkerr_phase[M_ZERO] + gaussian_walk2;
 

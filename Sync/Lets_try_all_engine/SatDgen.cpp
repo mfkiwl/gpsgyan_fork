@@ -766,7 +766,7 @@ void SatDgen::OutputData(std::ostream & 	s )
     }
 
 /*----------------------------------------------------------------------------------------------
- * Function					: void CupdateCER(const Xvt& svPosVel, const Position& Rx, const double& rawrange, const SatDb  *satDb)
+ * Function					: void updateCER(const Xvt& svPosVel, const Position& Rx, const double& rawrange, const SatDb  *satDb)
  *
  * Abstract					: Compute the corrected range at TRANSMIT time, from receiver at position Rx,
  *    						  to the GPS satellite given by SatID sat, as well as all the CER quantities,

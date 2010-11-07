@@ -267,14 +267,13 @@ for (int i=0; i<totalSat; i++)
      bool measHealth = getMeasurement(satid,satMDE_ai.rxXvt,measTime,satMDE_ai.satDb,satMDE_ai.satDgen,0,true,false);
 	// Compute range with only visible sat
 	double range =satMDE_ai.satDgen->satDgen_oData.pseudoRange;
-	
 	double clk = satMDE_ai.satDgen->satDgen_oData.svPosVel.ddtime;
     // Add ionodelay
     LoadChannel(satMDE_ai,satid);
 	range += satMDE_ai.channel->channelGPS_oData.ionoDelay;
 
 	if(prvMeas[satid].prvPseudoRange == M_ZERO)
-	{ // Put health of measurement = zero
+	{ // Put health of measurement & Delta range = zero for the first condition
 	temp_mdpdata.measHealth = false;
 	tempRangeRate = M_ZERO;
 
@@ -380,10 +379,8 @@ void SatMDE::ComputePhaseAndDoppler(const double &rangeRate,const double &clkCor
 	clkL5.codeDoppler  = clkL5.carrDoppler/gpsCar2CodeRatio;
 
 	}
-
-
-
-bool SatMDE::getMeasurement (SatID &temp_satid,
+/*----------------------------------------------------------------------------------------------
+ * Function					: getMeasurement((SatID &temp_satid,
 							 Position &rxXvt,
 							 DayTime  &measTime,
 							 SatDb    *satDb,
@@ -391,10 +388,41 @@ bool SatMDE::getMeasurement (SatID &temp_satid,
 							 double range,
 							 bool firstMeas,
 							 bool svRange)
+ * Abstract					: This function is the using data gen engine as black box, it passes
+ *							  the parameters to the SatDgen engine and executes it to get the desired
+ *							  output fromt the outpur port of SatDgen Engine; // See the output port of the SatDgen
+ * Formal
+ * Parameter(s) 			: Other Engine Pointerr
+ * Return value 			: None
+ * System Call				: None
+ * Engine  called			: SatDgen and SatDb
+ * Reference				: OOSDM core framework
+ * Specific library calls	: None
+ * Member variables accessed: status flag of passive input
+ * Assumptions 				: None
+ *
+ ----------------------------------------------------------------------------------------------*/
+bool SatMDE::getMeasurement (SatID &temp_satid,
+							 Position &rxXvt, // Position of the receiver for which the measurement is being generated
+							 DayTime  &measTime,// Time for which the measurement is generated 
+							 SatDb    *satDb, // Pointer to the SatDb Engine (you can put different data base 
+							 SatDgen *satDgen,// Pointer to Sat Dgen engine
+							 double range,
+							 bool firstMeas,
+							 bool svRange)
  {
+ // To use any engine inside some other Engine we just need to call it as API'
+// In OOSDM framework, it is always done by defining the port structure; you should see the
+	 //Port defination of the engine before using it. 
+/*------------------------------------------*/
+/*** Defining the Input Port Structures******/
+/*------------------------------------------*/
+	 satDgen_activeInput activeInput;
+	satDgen_activeParam activeControl;
 
-satDgen_activeInput activeInput;
-satDgen_activeParam activeControl;
+/*------------------------------------------*/
+/*** ASSIGN the Input Port Structures by the param passed in function*/
+/*------------------------------------------*/
 activeInput.measTime = measTime;
 activeInput.satid = temp_satid;
 activeInput.rxPos = rxXvt;
@@ -404,9 +432,22 @@ activeInput.satDb = satDb;
 activeControl.firstMeas =firstMeas;
 activeControl.svRange =svRange;
 
+/*------------------------------------------*/
+/*** Map the Input Port Structures******/
+/*------------------------------------------*/
+
 satDgen->activeControl=activeControl;
 satDgen->activeData=activeInput;
+
+/*------------------------------------------*/
+/*** Run / Control the Engine using framework command ******/
+/*------------------------------------------*/
+
 satDgen->Engine(SatDgen::RUN_ALL );
+
+/*------------------------------------------*/
+/*** Decide  the output of Engine using framework command ******/
+/*------------------------------------------*/
 satDgen->EngineOutput(SatDgen::DATA_HERE);
 return(satDgen->satDgen_probe.h_ofOpData);
 
@@ -439,16 +480,49 @@ void SatMDE::ComputeVisibility()
 	visiblityComputed = true;
 }
 
+/*----------------------------------------------------------------------------------------------
+ * Function					:CodeGenerator(CodeGen   *codegen, SatID &satid ,double& codefrequency)
+ * Abstract					: This function is the using CodeGenerator engine as black box, it passes
+ *							  the parameters to the CodeGenerator engine and executes it to get the desired
+ *							  output fromt the outpur port of CodeGenerator Engine; // See the output port of the CodeGenerator
+ * Formal
+ * Parameter(s) 			: CodeGenerator Engine Pointerr
+ * Return value 			: None
+ * System Call				: None
+ * Engine  called			: CodeGenerator
+ * Reference				: OOSDM core framework
+ * Specific library calls	: None
+ * Member variables accessed: status flag of passive input
+ * Assumptions 				: None
+ *
+ ----------------------------------------------------------------------------------------------*/
+
 void SatMDE::CodeGenerator(CodeGen   *codegen, SatID &satid ,double& codefrequency)
 {
+/*------------------------------------------*/
+/*** Defining the Input Port Structures******/
+/*------------------------------------------*/
 codeGen_activeInput activeData;
+/*------------------------------------------*/
+/*** ASSIGN the Input Port Structures by the param passed in function*/
+/*------------------------------------------*/
 activeData.initSlew = prvMeas[satid].prvSlew;
 activeData.initSlewPhase = prvMeas[satid].prvSlewPhase;
 activeData.satCodeClk = codefrequency;
 activeData.satid= satid;
 
+/*------------------------------------------*/
+/*** Map the Input Port Structures******/
+/*------------------------------------------*/
+
 	codegen->activeData=activeData;
+/*------------------------------------------*/
+/*** Run / Control the Engine using framework command ******/
+/*------------------------------------------*/
 	codegen->Engine(CodeGen::RUN_METHOD );
+/*------------------------------------------*/
+/*** Decide  the output of Engine using framework command ******/
+/*------------------------------------------*/
 	codegen->EngineOutput(CodeGen::DATA_HERE);
 	/*bool datahealth = satDb->satDb_probe.h_ofOpData;
 	if(!datahealth)
@@ -458,11 +532,33 @@ activeData.satid= satid;
 	
 
 }
-
+/*----------------------------------------------------------------------------------------------
+ * Function					:CodeGenerator(CodeGen   *codegen, SatID &satid ,double& codefrequency)
+ * Abstract					: This function is the using CodeGenerator engine as black box, it passes
+ *							  the parameters to the CodeGenerator engine and executes it to get the desired
+ *							  output fromt the outpur port of CodeGenerator Engine; // See the output port of the CodeGenerator
+ * Formal
+ * Parameter(s) 			: CodeGenerator Engine Pointerr
+ * Return value 			: None
+ * System Call				: None
+ * Engine  called			: CodeGenerator
+ * Reference				: OOSDM core framework
+ * Specific library calls	: None
+ * Member variables accessed: status flag of passive input
+ * Assumptions 				: None
+ *
+ ----------------------------------------------------------------------------------------------*/
 void SatMDE::CarrGenerator(CarrGen   *carrgen, SatID &satid ,double& carrfrequency)
 {
-carrGen_activeInput activeData;
+	/*------------------------------------------*/
+/*** Defining the Input Port Structures******/
+/*------------------------------------------*/
+	carrGen_activeInput activeData;
 carrGen_activeParam activeControl;
+
+/*------------------------------------------*/
+/*** ASSIGN the Input Port Structures by the param passed in function*/
+/*------------------------------------------*/
 activeData.initCoarsePhase = prvMeas[satid].prvCoarsePhase;
 activeData.initCarrierFinePhase = prvMeas[satid].prvCarrierFinePhase;
 activeData.satCarrClk = carrfrequency;
@@ -471,17 +567,27 @@ activeData.satid= satid;
 activeControl.useRxclkModel = false;
 
 
+/*------------------------------------------*/
+/*** Map the Input Port Structures******/
+/*------------------------------------------*/
+carrgen->activeData=activeData;
+carrgen->activeControl=activeControl;
 
-	carrgen->activeData=activeData;
-    carrgen->activeControl=activeControl;
-	carrgen->Engine(CarrGen::RUN_METHOD );
+/*------------------------------------------*/
+/*** Run / Control the Engine using framework command ******/
+/*------------------------------------------*/
+
+carrgen->Engine(CarrGen::RUN_METHOD );
+
+/*------------------------------------------*/
+/*** Decide  the output of Engine using framework command ******/
+/*------------------------------------------*/
 	carrgen->EngineOutput(CarrGen::DATA_HERE);
 	/*bool datahealth = satDb->satDb_probe.h_ofOpData;
 	if(!datahealth)
 	satDgen_probe.h_ofOpData=false;
 	else
 	satDgen_probe.h_ofOpData=true;*/
-	
 
 }
 
@@ -542,45 +648,12 @@ void SatMDE::outputInfFromEngine(std::ostream &s, SatID &satid , int type )
 	}
 	
 	
-
-	/*for (unsigned int prn=0; prn <satMDE_oData.size(); prn++)
-      {
-
-		using std::endl;
-		using std::setw;
-       s << std::setprecision(4);    // set the precision of probe output
-	   s << print_content(satMDE_oData[prn]);
-	}
-	/*el = leftJustify("______________________________",24);
-	el += leftJustify("\n",3);
-	s<<el;
-	s << satTime.printf("%Y %03j % 12.6s")<<endl;
-	el = leftJustify("______________________________",24);
-	el += leftJustify("\n",3);
-	s<<el;*/
-
-
-
-    }
+   }
 
 
 void SatMDE::SatMDE_ExpHandler(ExcSatMDE &e)
 {
 	int i=0;
-/*
-unsigned long eid = error_number[1];
-
-
-	switch(eid)
-	{
-	case 2: minElev = MIN_ELV_ANGLE;
-		break;
-	case 1: e.terminate();
-		break;
-	case 0: cout<<"over";
-		break;
-	}
-	*/
 
 }
 
