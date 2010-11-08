@@ -73,7 +73,7 @@ void InputParamToEngine() throw(InvalidParameter);
 void OutputDumpOfEngine();
 
 //public data Members
-DayTime gpsTrueTime,rxModelledTime ;
+DayTime trueGPStime,rxModelledTime ;
 bool simTimerExpired;
 
 

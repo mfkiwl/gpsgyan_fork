@@ -83,13 +83,13 @@ if(!isThisFirstTick)
 		isThisFirstTick = true;
 		}
 
-	// Addtion of 1 seconds
+	// Addtion of 1 seconds for 1 Hz update
 
     if(simTimerExpired)
 	{
 	simTimerExpired = false;
 	simTimebase.addSeconds((double)1);
-	gpsTrueTime = simTimebase ;
+	trueGPStime = simTimebase ;
 
 
     // Model Receiver clock

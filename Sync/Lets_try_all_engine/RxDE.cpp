@@ -325,6 +325,7 @@ void RxDE::VerifyIpToEngine() throw(ExcRxDE)
 void RxDE::MethodOfEngine()
 {
   double update_interval =1;
+  
   double rx_correction =GenerateRxClkErr(update_interval);
   rxDE_pData.rx_time = p_activeData.trueGPStime + rx_correction;
   rxDE_pData.trueGPStime = p_activeData.trueGPStime ;
