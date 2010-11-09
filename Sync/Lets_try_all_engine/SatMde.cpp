@@ -628,7 +628,7 @@ void SatMDE::outputInfFromEngine(std::ostream &s, SatID &satid , int type )
 	el += leftJustify("\t",3);
 	el += satMDE_oData[satid].dataNmeas.opDataHeader;
 	el += satMDE_oData[satid].dataChannel.opDataHeader;
-	el += leftJustify("\n",3);
+	//el += leftJustify("\n",3);
 	s<<el;
 	
 	break;
@@ -638,6 +638,11 @@ void SatMDE::outputInfFromEngine(std::ostream &s, SatID &satid , int type )
 	el += leftJustify("\t",3);
 	el += satMDE_oData[satid].dataNmeas.opDataInString;
 	el += satMDE_oData[satid].dataChannel.opDataInString;
+	//el += leftJustify("\n",3);
+	s<<el;
+	break;
+
+	case 3:
 	el += leftJustify("\n",3);
 	s<<el;
 	break;

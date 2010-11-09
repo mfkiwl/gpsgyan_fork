@@ -265,12 +265,30 @@ mdp_rxAnt2.GetPassiveInput(mdp_rxAnt1.ref_psv);
 		f1=true;
 		SatID satid = mdp_rxAnt1.visibleSV[1];
 		mdp_rxAnt1.outputInfFromEngine (s1,satid,0);
+		satid = mdp_rxAnt2.visibleSV[1];
+		mdp_rxAnt2.outputInfFromEngine (s1,satid,0);
+		mdp_rxAnt2.outputInfFromEngine (s1,satid,3); // just adds a new line
+
+
 		satid = mdp_rxAnt1.visibleSV[2];
 		mdp_rxAnt1.outputInfFromEngine (s2,satid,0);
-		satid = mdp_rxAnt2.visibleSV[1];
-		mdp_rxAnt2.outputInfFromEngine (s3,satid,0);
 		satid = mdp_rxAnt2.visibleSV[2];
-		mdp_rxAnt2.outputInfFromEngine (s4,satid,0);
+		mdp_rxAnt2.outputInfFromEngine (s2,satid,0); //
+		mdp_rxAnt2.outputInfFromEngine (s2,satid,3); // just adds a new line
+
+		satid = mdp_rxAnt1.visibleSV[3];
+		mdp_rxAnt1.outputInfFromEngine (s3,satid,0);
+		satid = mdp_rxAnt2.visibleSV[3];
+		mdp_rxAnt2.outputInfFromEngine (s3,satid,0); //
+		mdp_rxAnt2.outputInfFromEngine (s3,satid,3); // just adds a new line
+
+		satid = mdp_rxAnt1.visibleSV[3];
+		mdp_rxAnt1.outputInfFromEngine (s3,satid,0);
+		satid = mdp_rxAnt2.visibleSV[3];
+		mdp_rxAnt2.outputInfFromEngine (s3,satid,0); //
+		mdp_rxAnt2.outputInfFromEngine (s3,satid,3); // just adds a new line
+
+
 		el +=rx1_clock.rxDE_oData.opDataHeader;
 		el += leftJustify("\n",3);
 		s5<<el;
@@ -287,15 +305,30 @@ mdp_rxAnt2.GetPassiveInput(mdp_rxAnt1.ref_psv);
 
 	SatID satid = mdp_rxAnt1.visibleSV[1];
 	mdp_rxAnt1.outputInfFromEngine (s1,satid,1);
-
-	satid = mdp_rxAnt1.visibleSV[2];
-	mdp_rxAnt1.outputInfFromEngine (s2,satid,1);
-
 	satid = mdp_rxAnt2.visibleSV[1];
-	mdp_rxAnt2.outputInfFromEngine (s3,satid,1);
+	mdp_rxAnt2.outputInfFromEngine (s1,satid,1);
+    mdp_rxAnt2.outputInfFromEngine (s1,satid,3); // just adds a new line
 
-		satid = mdp_rxAnt2.visibleSV[2];
+
+
+   satid = mdp_rxAnt1.visibleSV[2];
+	mdp_rxAnt1.outputInfFromEngine (s2,satid,1);
+	satid = mdp_rxAnt2.visibleSV[2];
+	mdp_rxAnt2.outputInfFromEngine (s2,satid,1);
+    mdp_rxAnt2.outputInfFromEngine (s2,satid,3); // just adds a new line
+
+
+	satid = mdp_rxAnt1.visibleSV[3];
+	mdp_rxAnt1.outputInfFromEngine (s3,satid,1);
+	satid = mdp_rxAnt2.visibleSV[3];
+	mdp_rxAnt2.outputInfFromEngine (s3,satid,1);
+    mdp_rxAnt2.outputInfFromEngine (s3,satid,3); // just adds a new line
+
+	satid = mdp_rxAnt1.visibleSV[4];
+	mdp_rxAnt1.outputInfFromEngine (s4,satid,1);
+	satid = mdp_rxAnt2.visibleSV[4];
 	mdp_rxAnt2.outputInfFromEngine (s4,satid,1);
+    mdp_rxAnt2.outputInfFromEngine (s4,satid,3); // just adds a new line
 
 
 	crap.Engine(SimTimeEngine::RUN_METHOD);
